@@ -37,7 +37,8 @@
         --bg-transparent: rgba(255, 255, 255, 0.8);
         --bg: #fff;
         --bg-tile: #e9e9e9;
-        --text: #fff;
+        --text-alert: #fff;
+        --text-tile: #fff;
       }
 
       @media screen and (prefers-color-scheme: dark) {
@@ -46,7 +47,8 @@
           --bg-transparent: rgba(0, 0, 0, 0.8);
           --bg: #000;
           --bg-tile: #111;
-          --text: #333;
+          --text-alert: #000;
+          --text-tile: #333;
         }
       }
 
@@ -73,7 +75,7 @@
         background-color: var(--color);
         border-radius: var(--border);
         box-sizing: border-box;
-        color: white;
+        color: var(--text-alert);
         cursor: pointer;
         font-size: calc(var(--board-di) * 0.07);
         font-weight: bold;
@@ -128,7 +130,7 @@
         align-items: center;
         background: var(--bg-tile);
         border-radius: calc(var(--border) * 1.5);
-        color: var(--text);
+        color: var(--text-tile);
         content: attr(label);
         display: flex;
         flex-direction: column;
@@ -206,10 +208,10 @@
       alert.addEventListener("click", () => (alert.className = ""));
 
       class Piece {
-        constructor(color, density, height, shape) {
-          this.id = [color, density, height, shape].join("");
+        constructor(color, density, size, shape) {
+          this.id = [color, density, size, shape].join("");
           this.color = Piece.valueFromTraitAndNumber("color", color);
-          this.height = Piece.valueFromTraitAndNumber("height", height);
+          this.size = Piece.valueFromTraitAndNumber("size", size);
           this.shape = Piece.valueFromTraitAndNumber("shape", shape);
           this.density = Piece.valueFromTraitAndNumber("density", density);
           this.x = undefined;
@@ -219,7 +221,7 @@
             "piece",
             this.color,
             this.density,
-            this.height,
+            this.size,
             this.shape,
           ].join(" ");
           const piece = "short";
@@ -257,7 +259,7 @@
 
         static valueFromTraitAndNumber(trait, number) {
           if (trait === "color") return number ? "dark" : "light";
-          if (trait === "height") return number ? "large" : "small";
+          if (trait === "size") return number ? "large" : "small";
           if (trait === "shape") return number ? "square" : "round";
           if (trait === "density") return number ? "hollow" : "solid";
         }
@@ -283,7 +285,7 @@
             [0, 5, 10, 15],
             [12, 9, 6, 3],
           ];
-          const traits = ["color", "density", "height", "shape"];
+          const traits = ["color", "density", "size", "shape"];
           const matches = [];
           checks.forEach((indexes) => {
             const matrixValues = indexes
@@ -393,7 +395,7 @@
         onGameOver(data, color) {
           const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
           setTimeout(() => {
-            const text = data.map(({ value }) => cap(value)).join(" / ");
+            const text = data.map(({ trait }) => cap(trait)).join(" / ");
             alert.style.setProperty("--color", `var(--color-${color}`);
             alert.innerHTML = `<div>Game Over!<br>${text}</div>`;
             alert.className = "active";
