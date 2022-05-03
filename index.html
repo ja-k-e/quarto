@@ -34,11 +34,28 @@
         --dimension-lg: calc(var(--line) * 14);
         --dimension-sm: calc(var(--line) * 7);
         --line: var(--border);
+        --bg-transparent: rgba(255, 255, 255, 0.8);
+        --bg: #fff;
+        --bg-tile: #e9e9e9;
+        --text: #fff;
+      }
+
+      @media screen and (prefers-color-scheme: dark) {
+        :root {
+          --bg-transparent: rgba(0, 0, 0, 0.8);
+          --bg: #000;
+          --bg-tile: #111;
+          --text: #333;
+        }
+      }
+
+      body {
+        background: var(--bg);
       }
 
       #alert {
         --color: var(--color-dark);
-        background-color: rgba(255, 255, 255, 0.8);
+        background-color: var(--bg-transparent);
         bottom: 0;
         left: 0;
         opacity: 0;
@@ -108,9 +125,9 @@
 
       #board .tile::after {
         align-items: center;
-        background: #e9e9e9;
+        background: var(--bg-tile);
         border-radius: calc(var(--border) * 1.5);
-        color: white;
+        color: var(--text);
         content: attr(label);
         display: flex;
         flex-direction: column;
@@ -128,7 +145,7 @@
         --initial-x: 0;
         --initial-y: -1;
         background-position: center;
-        background-color: #fff;
+        background-color: var(--bg);
         background-image: repeating-linear-gradient(
           45deg,
           var(--color-piece),
